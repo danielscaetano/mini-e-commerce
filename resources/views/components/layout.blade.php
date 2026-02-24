@@ -1,0 +1,34 @@
+
+<!DOCTYPE html>
+<html lang="en" data-theme="lofi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ isset($title) ? $title . ' - Chirper' : 'Chirper' }}</title>
+    <link rel="preconnect" href="<https://fonts.bunny.net>">
+     @vite(['resources/css/app.css', 'resources/js/app.js'])
+</head>
+<body class="min-h-screen flex flex-col bg-base-200 font-sans">
+    <nav class="navbar bg-base-100">
+        <div class="navbar-start">
+            <a href="/" class="btn btn-ghost text-xl">🐦 mini e-commerce</a>
+        </div>
+        <div class="navbar-end gap-2">
+            <a href="#" class="btn btn-ghost btn-sm">Logar</a>
+            <a href="#" class="btn btn-primary btn-sm">Cadastrar</a>
+            <a href="/c_categoria" class="btn btn-primary btn-sm">Criar categoria</a>
+            <a href="#" class="btn btn-primary btn-sm">Criar produto</a>
+        </div>
+    </nav>
+
+    <main class="flex-1 container mx-auto px-4 py-8">
+        {{ $slot }}
+    </main>
+
+    <footer class="footer footer-center p-5 bg-base-300 text-base-content text-xs">
+        <div>
+            <p>© {{ date('Y') }} mini e-commerce</p>
+        </div>
+    </footer>
+</body>
+</html>
