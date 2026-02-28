@@ -14,10 +14,8 @@
             <a href="/" class="btn btn-ghost text-xl">🐦 mini e-commerce</a>
         </div>
         <div class="navbar-end gap-2">
-            <a href="#" class="btn btn-ghost btn-sm">Logar</a>
-            <a href="#" class="btn btn-primary btn-sm">Cadastrar</a>
-            <a href="/c_categoria" class="btn btn-primary btn-sm">Criar categoria</a>
-            <a href="#" class="btn btn-primary btn-sm">Criar produto</a>
+            <a href="{{ route ("categorias.create") }}" class="btn btn-primary btn-sm">Criar categoria</a>
+            <a href="{{ route("produtos.create") }}" class="btn btn-primary btn-sm">Criar produto</a>
         </div>
     </nav>
 
@@ -27,7 +25,7 @@
 
     <footer class="footer footer-center p-5 bg-base-300 text-base-content text-xs">
         <div>
-            <p>© {{ date('Y') }} mini e-commerce</p>
+            <p>© {{ date('Y')}} mini e-commerce</p>
         </div>
     </footer>
 </body>
