@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Categoria;
 use App\Models\Produto;
+use App\Http\Requests\StoreCategoriaRequest;
 use Illuminate\Http\Request;
 
 class ProdutoController extends Controller
@@ -33,8 +34,26 @@ class ProdutoController extends Controller
      */
     public function store(Request $request)
     {
-        //
+    $validated = $request->validate([
+        'nome_produto' => 'required|max:50',
+        'descricao' => 'required|max:255',
+        'valor' => 'required|numeric|min:0',
+        'id_categoria' => 'required|exists:categorias,id', // Garante que o user existe
+    ]);
+
+   \App\Models\produto::create([
+        'nome_produto' => $validated['nome_produto'],
+        'descricao' => $validated['descricao'],
+        'valor' => $validated['valor'],
+        'id_categoria' => $validated['id_categoria'],
+
+    ]);
+ 
+    return redirect('/')->with('success', 'produto!');
     }
+    
+   
+
 
     /**
      * Display the specified resource.
@@ -67,4 +86,5 @@ class ProdutoController extends Controller
     {
         //
     }
+    
 }

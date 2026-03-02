@@ -26,6 +26,7 @@
 </head>
 <body>
     <form method="POST" action="{{   route('produtos.store') }}" >
+        @csrf
     <table>
         <tr>
             <label>Categoria</a>
@@ -49,7 +50,7 @@
         <tr>    
             <td>
                 <label>Valor do Produto</label>
-                <input type="number" name="valor">
+                <input type="number" step="0.01"  name="valor">
             </td>
         </tr>
         <tr>    

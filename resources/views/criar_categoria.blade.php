@@ -49,9 +49,6 @@
 
         <!-- Feed -->
         <div class="space-y-4 mt-8">
-            @forelse ($categorias as $nome_categoria)
-                {{-- <x-categoria categoria:="$nome_categoria" /> --}}
-            @empty
                 <div class="hero py-12">
                     <div class="hero-content text-center">
                         <div>
@@ -61,7 +58,6 @@
                         </div>
                     </div>
                 </div>
-            @endforelse
         </div>
     </div>
 </x-layout>
