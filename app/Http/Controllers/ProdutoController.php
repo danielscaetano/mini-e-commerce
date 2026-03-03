@@ -6,6 +6,9 @@ use App\Models\Categoria;
 use App\Models\Produto;
 use App\Http\Requests\StoreCategoriaRequest;
 use Illuminate\Http\Request;
+use App\Models\Pedido;
+use App\Models\iten;
+
 
 class ProdutoController extends Controller
 {
@@ -38,7 +41,7 @@ class ProdutoController extends Controller
         'nome_produto' => 'required|max:50',
         'descricao' => 'required|max:255',
         'valor' => 'required|numeric|min:0',
-        'id_categoria' => 'required|exists:categorias,id', // Garante que o user existe
+        'id_categoria' => 'required|exists:categorias,id', 
     ]);
 
    \App\Models\produto::create([
@@ -59,9 +62,9 @@ class ProdutoController extends Controller
      * Display the specified resource.
      */
     public function show(Produto $produto)
-    {
-        //
-    }
+{
+    $produto->load('categoria'); 
+}
 
     /**
      * Show the form for editing the specified resource.
@@ -86,5 +89,32 @@ class ProdutoController extends Controller
     {
         //
     }
+
+
+     public function adicionarAoCarrinho(Request $request)
+    {
+        $produtosSelecionados = collect($request->produtos ?? [])
+            ->filter(fn($item) => isset($item['selecionado']));
+
+        if ($produtosSelecionados->isEmpty()) {
+            return redirect()->back()->with('error', 'Nenhum produto selecionado!');
+        }
+
+        // 1️⃣ Criar pedido
+        $pedido = Pedido::create([
+            'nome_cliente' => 'Cliente Exemplo', 
+        ]);
+
+        foreach ($produtosSelecionados as $id_produto => $item) {
+            Item::create([
+                'id_produto' => $id_produto,
+                'id_pedido' => $pedido->id,
+                'quantidade' => $item['quantidade'],
+            ]);
+        }
+
+        return redirect()->back()->with('success', 'Produtos adicionados ao pedido!');
+    }
+
     
 }

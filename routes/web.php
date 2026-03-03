@@ -11,3 +11,5 @@ Route::get('/', [HomeController::class, 'home']);
 Route::resource('produtos', ProdutoController::class);
 
 Route::resource('categorias', CategoriaController::class);
+
+Route::post('/carrinho/adicionar', [ProdutoController::class, 'adicionarAoCarrinho'])->name('carrinho.adicionar');
