@@ -14,7 +14,7 @@
 </head>
 
 <body>
-
+ 
 
     <x-layout>
         <x-slot:title>
@@ -34,13 +34,11 @@
                 </div>
 
                 <div class="mt-4 flex items-center gap-2">
-                    <!-- Checkbox para selecionar o produto -->
                     <label class="flex items-center gap-1">
                         <input type="checkbox" name="produtos[{{ $produto->id }}][selecionado]" value="1" class="checkbox">
                         Selecionar
                     </label>
 
-                    <!-- Input de quantidade -->
                     <input type="number" name="produtos[{{ $produto->id }}][quantidade]" value="1" min="1" class="input input-bordered w-20">
                 </div>
             </div>
@@ -53,7 +51,33 @@
         <button type="submit" class="btn btn-primary">Adicionar ao carrinho</button>
     </div>
 </form>
+<div class="mt-10">
+    <h2 class="text-2xl font-bold mb-4">Pedidos</h2>
+
+    @forelse ($pedidos as $pedido)
+        <div class="card bg-base-200 shadow p-4 mb-4">
+
+            <div class="flex justify-between">
+                <span class="font-bold">{{ $pedido->nome_cliente }}</span>
+                <span class="text-green-600 font-bold">
+                    Total: R$ {{ number_format($pedido->total, 2, ',', '.') }}
+                </span>
+            </div>
+
+            <ul class="mt-2 text-sm">
+                @foreach ($pedido->itens as $item)
+                    <li>
+                        {{ $item->produto->nome_produto }}
+                        ({{ $item->quantidade }}x)
+                    </li>
+                @endforeach
+            </ul>
+
+        </div>
+    @empty
+        <p>Nenhum pedido ainda.</p>
+    @endforelse
+</div>
     </x-layout>
 </body>
-
 </html>

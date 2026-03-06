@@ -34,7 +34,7 @@ class CategoriaController extends Controller
         'nome_categoria' => 'required|string|max:255',
     ]);
  
-    \App\Models\categoria::create([
+    \App\Models\Categoria::create([
         'nome_categoria' => $validated['nome_categoria'],
     ]);
  

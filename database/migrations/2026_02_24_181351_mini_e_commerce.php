@@ -26,8 +26,9 @@ return new class extends Migration {
             $table->id("id");
             $table->string("nome_cliente");
             $table->timestamps();
+            $table->boolean("pago");
         });
-
+    
         Schema::create('itens', function (Blueprint $table) {
             $table->id("id");
             $table->foreignId('id_produto')->references('id')->on('produtos');
@@ -35,15 +36,7 @@ return new class extends Migration {
             $table->integer("quantidade");
             $table->timestamps();
         });
-
-        Schema::create('pagamentos', function (Blueprint $table) {
-            $table->id("id");
-            $table->foreignId('id_pedido')->references('id')->on('pedidos');
-            $table->float('valor', 2);
-            $table->timestamps();
-        });
-
-
+    
     }
 
     public function down(): void

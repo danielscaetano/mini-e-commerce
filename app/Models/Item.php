@@ -10,6 +10,7 @@ class Item extends Model
     protected $fillable = [
         'id_produto',
         'id_pedido',
+        'quantidade',
     ];
 
     public function id_produto()

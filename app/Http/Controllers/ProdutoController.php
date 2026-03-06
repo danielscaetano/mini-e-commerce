@@ -7,7 +7,7 @@ use App\Models\Produto;
 use App\Http\Requests\StoreCategoriaRequest;
 use Illuminate\Http\Request;
 use App\Models\Pedido;
-use App\Models\iten;
+use App\Models\Item;
 
 
 class ProdutoController extends Controller
@@ -44,7 +44,7 @@ class ProdutoController extends Controller
         'id_categoria' => 'required|exists:categorias,id', 
     ]);
 
-   \App\Models\produto::create([
+   \App\Models\Produto::create([
         'nome_produto' => $validated['nome_produto'],
         'descricao' => $validated['descricao'],
         'valor' => $validated['valor'],
@@ -100,9 +100,12 @@ class ProdutoController extends Controller
             return redirect()->back()->with('error', 'Nenhum produto selecionado!');
         }
 
-        // 1️⃣ Criar pedido
-        $pedido = Pedido::create([
-            'nome_cliente' => 'Cliente Exemplo', 
+        $validated = $request->validate([
+        'nome_cliente' => 'required|string|max:255',
+        ]);
+
+        $pedido = \App\Models\Pedido::create([
+            'nome_cliente' => $validated['nome_cliente'], 
         ]);
 
         foreach ($produtosSelecionados as $id_produto => $item) {
