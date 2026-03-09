@@ -26,7 +26,7 @@ return new class extends Migration {
             $table->id("id");
             $table->string("nome_cliente");
             $table->timestamps();
-            $table->boolean("pago");
+            $table->boolean("pago")->default(false);
         });
     
         Schema::create('itens', function (Blueprint $table) {

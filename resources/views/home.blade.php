@@ -51,33 +51,25 @@
         <button type="submit" class="btn btn-primary">Adicionar ao carrinho</button>
     </div>
 </form>
-<div class="mt-10">
-    <h2 class="text-2xl font-bold mb-4">Pedidos</h2>
-
-    @forelse ($pedidos as $pedido)
-        <div class="card bg-base-200 shadow p-4 mb-4">
-
-            <div class="flex justify-between">
-                <span class="font-bold">{{ $pedido->nome_cliente }}</span>
-                <span class="text-green-600 font-bold">
-                    Total: R$ {{ number_format($pedido->total, 2, ',', '.') }}
-                </span>
-            </div>
-
-            <ul class="mt-2 text-sm">
-                @foreach ($pedido->itens as $item)
-                    <li>
-                        {{ $item->produto->nome_produto }}
-                        ({{ $item->quantidade }}x)
-                    </li>
-                @endforeach
-            </ul>
-
+@foreach ($pedidos as $pedido)
+<form action="{{ route('marcarcomopago', $pedido->id) }}" method="POST">
+    @csrf
+    <div class="card bg-base-200 shadow p-4 mb-4">
+        <div class="flex justify-between">
+            <span class="font-bold">{{ $pedido->nome_cliente }}</span>
+            <span class="text-green-600 font-bold">
+                Total: R$ {{ number_format($pedido->total, 2, ',', '.') }}
+                <button type="submit" class="btn btn-primary">Pagar</button>
+            </span>
         </div>
-    @empty
-        <p>Nenhum pedido ainda.</p>
-    @endforelse
-</div>
+        <ul class="mt-2 text-sm">
+            @foreach ($pedido->itens as $item)
+                <li>{{ $item->produto->nome_produto }} ({{ $item->quantidade }}x)</li>
+            @endforeach
+        </ul>
+    </div>
+</form>
+@endforeach
     </x-layout>
 </body>
 </html>

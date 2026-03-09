@@ -4,22 +4,36 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Pedido;
-
+use App\Models\Produto;
 class PedidoController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
 
-public function index()
-{
-    $produtos = Produto::with('categoria')->get();
+    public function index()
+    {
+        $produtos = Produto::with('categoria')->get();
 
-    $pedidos = Pedido::with('itens.produto')->get();
+        $pedidos = Pedido::with('itens.produto')->get();
 
-    return view('home', compact('produtos', 'pedidos'));
-}
+        return view('home', compact('produtos', 'pedidos'));
+    }
 
+    public function marcarcomopago($id)
+    {
+            $pedido = Pedido::find($id);
+
+            if (!$pedido) {
+                return redirect()->back()->with('error', 'Pedido não encontrado.');
+            }
+
+            $pedido->update([
+                'pago' => true
+            ]);
+
+            return redirect()->back()->with('success', 'Pedido marcado como pago!');
+    }
     /**
      * Show the form for creating a new resource.
      */

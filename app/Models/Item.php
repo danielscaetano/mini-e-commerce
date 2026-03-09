@@ -13,13 +13,13 @@ class Item extends Model
         'quantidade',
     ];
 
-    public function id_produto()
+    public function produto()
     {
-        return $this->belongsTo(Categoria::class, 'id_produto');
+        return $this->belongsTo(Produto::class, 'id_produto');
     }
 
-    public function id_pedido()
+    public function pedido()
     {
-        return $this->belongsTo(Categoria::class, 'id_pedido');
+        return $this->belongsTo(Pedido::class, 'id_pedido');
     }
 }
