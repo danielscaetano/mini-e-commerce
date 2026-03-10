@@ -3,12 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Categoria;
-use App\Models\Produto;
-use App\Http\Requests\StoreCategoriaRequest;
-use Illuminate\Http\Request;
-use App\Models\Pedido;
 use App\Models\Item;
-
+use App\Models\Produto;
+use Illuminate\Http\Request;
 
 class ProdutoController extends Controller
 {
@@ -25,10 +22,10 @@ class ProdutoController extends Controller
      */
     public function create()
     {
-        $categorias =Categoria ::all();
+        $categorias = Categoria::all();
 
-        return view("criar_produto",[
-            "categorias" => $categorias
+        return view('criar_produto', [
+            'categorias' => $categorias,
         ]);
     }
 
@@ -37,34 +34,31 @@ class ProdutoController extends Controller
      */
     public function store(Request $request)
     {
-    $validated = $request->validate([
-        'nome_produto' => 'required|max:50',
-        'descricao' => 'required|max:255',
-        'valor' => 'required|numeric|min:0',
-        'id_categoria' => 'required|exists:categorias,id', 
-    ]);
+        $validated = $request->validate([
+            'nome_produto' => 'required|max:50',
+            'descricao' => 'required|max:255',
+            'valor' => 'required|numeric|min:0',
+            'id_categoria' => 'required|exists:categorias,id',
+        ]);
 
-   \App\Models\Produto::create([
-        'nome_produto' => $validated['nome_produto'],
-        'descricao' => $validated['descricao'],
-        'valor' => $validated['valor'],
-        'id_categoria' => $validated['id_categoria'],
+        \App\Models\Produto::create([
+            'nome_produto' => $validated['nome_produto'],
+            'descricao' => $validated['descricao'],
+            'valor' => $validated['valor'],
+            'id_categoria' => $validated['id_categoria'],
 
-    ]);
- 
-    return redirect('/')->with('success', 'produto!');
+        ]);
+
+        return redirect('/')->with('success', 'produto!');
     }
-    
-   
-
 
     /**
      * Display the specified resource.
      */
     public function show(Produto $produto)
-{
-    $produto->load('categoria'); 
-}
+    {
+        $produto->load('categoria');
+    }
 
     /**
      * Show the form for editing the specified resource.
@@ -90,22 +84,21 @@ class ProdutoController extends Controller
         //
     }
 
-
-     public function adicionarAoCarrinho(Request $request)
+    public function AdicionarAoCarrinho(Request $request)
     {
         $produtosSelecionados = collect($request->produtos ?? [])
-            ->filter(fn($item) => isset($item['selecionado']));
+            ->filter(fn ($item) => isset($item['selecionado']));
 
         if ($produtosSelecionados->isEmpty()) {
             return redirect()->back()->with('error', 'Nenhum produto selecionado!');
         }
 
         $validated = $request->validate([
-        'nome_cliente' => 'required|string|max:255',
+            'nome_cliente' => 'required|string|max:255',
         ]);
 
         $pedido = \App\Models\Pedido::create([
-            'nome_cliente' => $validated['nome_cliente'], 
+            'nome_cliente' => $validated['nome_cliente'],
         ]);
 
         foreach ($produtosSelecionados as $id_produto => $item) {
@@ -118,6 +111,4 @@ class ProdutoController extends Controller
 
         return redirect()->back()->with('success', 'Produtos adicionados ao pedido!');
     }
-
-    
 }
