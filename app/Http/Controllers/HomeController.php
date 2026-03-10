@@ -1,8 +1,9 @@
 <?php
+
 namespace App\Http\Controllers;
-use Illuminate\Http\Request;
-use App\Models\Produto;
+
 use App\Models\Pedido;
+use App\Models\Produto;
 
 class HomeController extends Controller
 {
@@ -11,16 +12,15 @@ class HomeController extends Controller
         $produtos = Produto::with('categoria')->get();
 
         $pedidos = Pedido::with('itens.produto')
-                    ->where('pago', false)
-                    ->get();
-
+            ->where('pago', false)
+            ->get();
 
         foreach ($pedidos as $pedido) {
-            $pedido->total = $pedido->itens->sum(function($item) {
+            $pedido->total = $pedido->itens->sum(function ($item) {
                 return $item->produto->valor * $item->quantidade;
             });
         }
 
-        return view("home", compact('produtos', 'pedidos'));
+        return view('home', compact('produtos', 'pedidos'));
     }
 }

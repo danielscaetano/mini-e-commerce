@@ -3,8 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Categoria;
-use App\Http\Requests\StoreCategoriaRequest;
-use App\Http\Requests\UpdateCategoriaRequest;
 use Illuminate\Http\Request;
 
 class CategoriaController extends Controller
@@ -14,15 +12,14 @@ class CategoriaController extends Controller
      */
     public function index()
     {
-      
-    } 
+    }
 
     /**
      * Show the form for creating a new resource.
      */
     public function create()
     {
-                return view("criar_categoria");
+        return view('criar_categoria');
     }
 
     /**
@@ -30,17 +27,17 @@ class CategoriaController extends Controller
      */
     public function store(Request $request)
     {
-    $validated = $request->validate([
-        'nome_categoria' => 'required|string|max:255',
-    ]);
- 
-    \App\Models\Categoria::create([
-        'nome_categoria' => $validated['nome_categoria'],
-    ]);
- 
-    
-    return redirect('/')->with('success', 'categoria criada!');
+        $validated = $request->validate([
+            'nome_categoria' => 'required|string|max:255',
+        ]);
+
+        \App\Models\Categoria::create([
+            'nome_categoria' => $validated['nome_categoria'],
+        ]);
+
+        return redirect('/')->with('success', 'categoria criada!');
     }
+
     public function show(Categoria $categoria)
     {
         return $categoria;

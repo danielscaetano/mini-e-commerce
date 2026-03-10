@@ -5,8 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 
 class Item extends Model
-{   
+{
     protected $table = 'itens';
+
     protected $fillable = [
         'id_produto',
         'id_pedido',

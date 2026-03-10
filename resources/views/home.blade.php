@@ -52,7 +52,7 @@
     </div>
 </form>
 @foreach ($pedidos as $pedido)
-<form action="{{ route('marcarcomopago', $pedido->id) }}" method="POST">
+<form action="{{ route('marcarComoPago', $pedido->id) }}" method="POST">
     @csrf
     <div class="card bg-base-200 shadow p-4 mb-4">
         <div class="flex justify-between">
