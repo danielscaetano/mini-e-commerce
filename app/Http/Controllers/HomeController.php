@@ -20,7 +20,16 @@ class HomeController extends Controller
                 return $item->produto->valor * $item->quantidade;
             });
         }
+        $pedidos_pago = Pedido::with('itens.produto')
+            ->where('pago', true)
+            ->get();
 
-        return view('home', compact('produtos', 'pedidos'));
+        foreach ($pedidos_pago as $pedido_pago) {
+            $pedido_pago->total = $pedido_pago->itens->sum(function ($item) {
+                return $item->produto->valor * $item->quantidade;
+            });
+        }
+
+        return view('home', compact('produtos', 'pedidos', 'pedidos_pago'));
     }
 }

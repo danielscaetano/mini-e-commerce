@@ -35,6 +35,7 @@ class PedidoController extends Controller
         return redirect()->back()->with('success', 'Pedido marcado como pago!');
     }
 
+
     /**
      * Show the form for creating a new resource.
      */
