@@ -69,6 +69,24 @@
         </ul>
     </div>
 </form>
+        Produtos pago
+@endforeach 
+@foreach ($pedidos_pago as $pedido_pago)
+@csrf
+<div class="card bg-base-200 shadow p-4 mb-4">
+    <div class="flex justify-between">
+        <span class="font-bold">{{ $pedido_pago->nome_cliente }}</span>
+        <span class="text-green-600 font-bold">
+            Total: R$ {{ number_format($pedido_pago->total, 2, ',', '.') }}
+        </span>
+    </div>
+
+    <ul class="mt-2 text-sm">
+        @foreach ($pedido_pago->itens as $item)
+            <li>{{ $item->produto->nome_produto }} ({{ $item->quantidade }}x)</li>
+        @endforeach
+    </ul>
+</div>
 @endforeach
     </x-layout>
 </body>
