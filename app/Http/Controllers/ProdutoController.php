@@ -14,7 +14,14 @@ class ProdutoController extends Controller
      */
     public function index()
     {
-        //
+        $produtos = Produto::all();
+
+        $categorias = Categoria::all();
+
+        return view('listar_produto', [
+            'categorias' => $categorias,
+            'produtos' => $produtos,
+        ]);
     }
 
     /**
