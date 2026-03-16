@@ -31,7 +31,7 @@ return new class () extends Migration {
 
         Schema::create('itens', function (Blueprint $table) {
             $table->id('id');
-            $table->foreignId('id_produto')->references('id')->on('produtos')->cascadeOnDelete();
+            $table->foreignId('id_produto')->references('id')->on('produtos');
             $table->foreignId('id_pedido')->references('id')->on('pedidos');
             $table->integer('quantidade');
             $table->timestamps();
