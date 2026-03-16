@@ -13,9 +13,9 @@ class PedidoController extends Controller
      */
     public function index()
     {
-        $produtos = Produto::with('categoria')->get();
+        $produtos = Produto::all();
 
-        $pedidos = Pedido::with('itens.produto')->get();
+        $pedidos = Pedido::all();
 
         return view('home', compact('produtos', 'pedidos'));
     }
@@ -79,8 +79,8 @@ class PedidoController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy()
     {
-        //
     }
+
 }

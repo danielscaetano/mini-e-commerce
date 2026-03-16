@@ -14,7 +14,14 @@ class ProdutoController extends Controller
      */
     public function index()
     {
-        //
+        $produtos = Produto::all();
+
+        $categorias = Categoria::all();
+
+        return view('listar_produto', [
+            'categorias' => $categorias,
+            'produtos' => $produtos,
+        ]);
     }
 
     /**
@@ -65,7 +72,12 @@ class ProdutoController extends Controller
      */
     public function edit(Produto $produto)
     {
-        //
+        $categorias = Categoria::all();
+
+        return view('editar_produto', [
+            'produto' => $produto,
+            'categorias' => $categorias
+        ]);
     }
 
     /**
@@ -73,16 +85,39 @@ class ProdutoController extends Controller
      */
     public function update(Request $request, Produto $produto)
     {
-        //
-    }
+        $existePedido = Item::where('id_produto', $produto->id)->exists();
+
+        if ($existePedido) {
+            return redirect()->back()->with('error', 'Não é possível editar um produto que já está em um pedido!');
+        }
+
+        $validated = $request->validate([
+            'nome_produto' => 'required|max:50',
+            'descricao' => 'required|max:255',
+            'valor' => 'required|numeric|min:0',
+            'id_categoria' => 'required|exists:categorias,id',
+        ]);
+
+        $produto->update($validated);
+
+        return redirect('/')->with('success', 'Produto atualizado!');
+        }
 
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(Produto $produto)
-    {
-        //
-    }
+    {   
+        $existePedido = Item::where('id_produto', $produto->id)->exists();
+
+        if ($existePedido) {
+            return redirect()->back()->with('error', 'Não é possível excluir um produto que já está em um pedido!');
+        }
+
+        $produto->delete();
+
+        return redirect('/')->with('success', 'Produto excluído!');
+        }
 
     public function AdicionarAoCarrinho(Request $request)
     {
