@@ -60,7 +60,6 @@ document.addEventListener('DOMContentLoaded', function(){
     const formulario = document.getElementById('formulario');
 
     formulario.addEventListener('submit', function () {
-        console.log("foi enviado");
         botao_salvar.disabled = true;
     })
 })

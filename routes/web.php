@@ -14,6 +14,3 @@ Route::resource('categorias', CategoriaController::class);
 
 Route::post('/carrinho/adicionar', [ProdutoController::class, 'AdicionarAoCarrinho'])->name('carrinho.adicionar');
 Route::post('/marcarComoPago/{id}', [PedidoController::class, 'marcarComoPago'])->name('marcarComoPago');
-// Route::put('/produtos/{id}', [ProdutoController::class, 'update'])->name('produtos.update');
-// Route::post('/produtos/{produto}/delete', [ProdutoController::class, 'destroy'])
-//     ->name('produtos.destroy');
