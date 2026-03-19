@@ -88,7 +88,9 @@ class ProdutoController extends Controller
         $existePedido = Item::where('id_produto', $produto->id)->exists();
 
         if ($existePedido) {
-            return redirect()->back()->with('error', 'Não é possível editar um produto que já está em um pedido!');
+            return back()->withErrors([
+            'valor' => 'Não é possivel alterar esse produto, pois existe um pedido com ele',
+        ])->withInput();
         }
 
         $validated = $request->validate([
@@ -101,13 +103,13 @@ class ProdutoController extends Controller
         $produto->update($validated);
 
         return redirect('/')->with('success', 'Produto atualizado!');
-        }
+    }
 
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(Produto $produto)
-    {   
+    {
         $existePedido = Item::where('id_produto', $produto->id)->exists();
 
         if ($existePedido) {
@@ -117,7 +119,7 @@ class ProdutoController extends Controller
         $produto->delete();
 
         return redirect('/')->with('success', 'Produto excluído!');
-        }
+    }
 
     public function AdicionarAoCarrinho(Request $request)
     {
