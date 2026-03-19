@@ -26,6 +26,7 @@
                 <label>Nome do Produto</label>
                 <input type="text" name="nome_produto"
                        value="{{ $produto->nome_produto }}" required>
+                       
             </td>
         </tr>
 
@@ -43,6 +44,11 @@
                 <input type="number" step="0.01"
                        name="valor"
                        value="{{ $produto->valor }}" required>
+                        @if ($errors->has('valor'))
+                            <div class="alert alert-danger">
+                                {{ $errors->first('valor') }}
+                            </div>
+                        @endif
             </td>
         </tr>
 

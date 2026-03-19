@@ -19,6 +19,8 @@
         <div class="navbar-end gap-2">
             <a href="{{ route ("categorias.create") }}" class="btn btn-primary btn-sm">Criar categoria</a>
             <a href="{{ route("produtos.index") }}" class="btn btn-primary btn-sm">Produtos</a>
+            <a href="{{ route("cadastro.index") }}" class="btn btn-primary btn-sm">Cadastre-se</a>
+            <a href="{{ route("login.index") }}" class="btn btn-primary btn-sm">Logar-se</a>
         </div>
     </nav>
 
