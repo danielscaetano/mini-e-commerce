@@ -2,6 +2,12 @@
     <x-slot:title>
         bem Vindo
     </x-slot:title>
+    <form action="{{ route('pedido.index') }}" method="GET" class="mb-4 flex gap-2">
+    <input type="text" name="nome_cliente" placeholder="Nome do Cliente" 
+           value="{{ request('nome_cliente') }}" class="input input-bordered">
+    <button type="submit" class="btn btn-secondary">Filtrar</button>
+    <a href="{{ route('pedido.index') }}" class="btn btn-ghost">Limpar</a>
+</form>
     <form action="{{ route('carrinho.adicionar') }}" method="POST">
         @csrf
         Qual o nome do Cliente?
@@ -56,8 +62,14 @@
                 </ul>
             </div>
         </form>
-        Produtos pago
+        
     @endforeach
+    
+    <div class="mt-4 mb-8">
+        {{ $pedidos->appends(request()->query())->links() }}
+    </div>
+
+    <h2 class="text-xl font-bold mb-4">Produtos pagos</h2>
     @foreach ($pedidos_pago as $pedido_pago)
         @csrf
         <div class="card bg-base-200 shadow p-4 mb-4">
@@ -72,6 +84,9 @@
                 @foreach ($pedido_pago->itens as $item)
                     <li>{{ $item->produto->nome_produto }} ({{ $item->quantidade }}x)</li>
                 @endforeach
+                <div class="mt-4">
+        {{ $pedidos_pago->appends(request()->query())->links() }}
+    </div>
             </ul>
         </div>
     @endforeach
