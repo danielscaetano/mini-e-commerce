@@ -11,26 +11,15 @@ class PedidoController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
+    public function index()
     {
         $produtos = Produto::all();
-        $pedido = Pedido::query();
 
-        if ($request->filled('nome_cliente')) {
-            $pedido->where('nome_cliente', 'like', '%' . $request->nome_cliente . '%');
-        }
-        $todosOsPedidosFiltrados = $pedido->latest()->get();
+        $pedidos = Pedido::all();
 
-        $pedidos = (clone $pedido)->where('pago', false)
-                                 ->latest()
-                                 ->paginate(5, ['*'], 'pendentes');
-
-        $pedidos_pago = (clone $pedido)->where('pago', true)
-                                      ->latest()
-                                      ->paginate(5, ['*'], 'pagos');
-
-        return view('home', compact('produtos', 'pedidos', 'pedidos_pago'));
+        return view('home', compact('produtos', 'pedidos'));
     }
+
     public function marcarComoPago($id)
     {
         $pedido = Pedido::find($id);

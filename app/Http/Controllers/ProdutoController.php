@@ -101,13 +101,13 @@ class ProdutoController extends Controller
         $produto->update($validated);
 
         return redirect('/')->with('success', 'Produto atualizado!');
-    }
+        }
 
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(Produto $produto)
-    {
+    {   
         $existePedido = Item::where('id_produto', $produto->id)->exists();
 
         if ($existePedido) {
@@ -117,7 +117,7 @@ class ProdutoController extends Controller
         $produto->delete();
 
         return redirect('/')->with('success', 'Produto excluído!');
-    }
+        }
 
     public function AdicionarAoCarrinho(Request $request)
     {
