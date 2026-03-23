@@ -9,7 +9,6 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [HomeController::class, 'home']);
 
 Route::resource('produtos', ProdutoController::class);
-Route::resource('pedido', PedidoController::class);
 
 Route::resource('categorias', CategoriaController::class);
 
