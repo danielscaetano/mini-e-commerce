@@ -24,7 +24,11 @@
                             class="input input-bordered w-20">deletar</button>
                             @method('DELETE')
                         </form>
-                    </div>produtos[{{ $produto->id }}]
+                    @if ($errors->has('delete'))
+                            <div class="alert alert-danger">
+                                {{ $errors->first('delete') }}
+                            </div>
+                        @endif
                 </div>
             @empty
             <p>Nenhum produto disponível.</p>

@@ -113,7 +113,9 @@ class ProdutoController extends Controller
         $existePedido = Item::where('id_produto', $produto->id)->exists();
 
         if ($existePedido) {
-            return redirect()->back()->with('error', 'Não é possível excluir um produto que já está em um pedido!');
+            return back()->withErrors([
+            'delete' => 'Não é possivel apagar esse produto, pois existe um pedido com ele',
+        ])->withInput();
         }
 
         $produto->delete();
