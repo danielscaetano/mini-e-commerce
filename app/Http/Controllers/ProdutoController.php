@@ -17,6 +17,9 @@ class ProdutoController extends Controller
         $produtos = Produto::all();
 
         $categorias = Categoria::all();
+        foreach ($produtos as $produto) {
+            $produto->existePedido = Item::where('id_produto', $produto->id)->exists();
+        }
 
         return view('listar_produto', [
             'categorias' => $categorias,
@@ -72,6 +75,13 @@ class ProdutoController extends Controller
      */
     public function edit(Produto $produto)
     {
+        $existePedido = Item::where('id_produto', $produto->id)->exists();
+
+        if ($existePedido) {
+            return back()->withErrors([
+            'produto' => 'Não é possivel alterar esse produto, pois existe um pedido com ele',
+        ])->withInput();
+        }
         $categorias = Categoria::all();
 
         return view('editar_produto', [
@@ -89,7 +99,7 @@ class ProdutoController extends Controller
 
         if ($existePedido) {
             return back()->withErrors([
-            'valor' => 'Não é possivel alterar esse produto, pois existe um pedido com ele',
+            'produto' => 'Não é possivel alterar esse produto, pois existe um pedido com ele',
         ])->withInput();
         }
 
@@ -110,17 +120,11 @@ class ProdutoController extends Controller
      */
     public function destroy(Produto $produto)
     {
-        $existePedido = Item::where('id_produto', $produto->id)->exists();
+        $produto = Produto::all();
 
-        if ($existePedido) {
-            return back()->withErrors([
-            'delete' => 'Não é possivel apagar esse produto, pois existe um pedido com ele',
-        ])->withInput();
-        }
 
         $produto->delete();
-
-        return redirect('/')->with('success', 'Produto excluído!');
+        return back();
     }
 
     public function AdicionarAoCarrinho(Request $request)
