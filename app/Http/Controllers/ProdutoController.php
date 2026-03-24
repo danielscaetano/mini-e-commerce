@@ -79,9 +79,10 @@ class ProdutoController extends Controller
 
         if ($existePedido) {
             return back()->withErrors([
-            'produto' => 'Não é possivel alterar esse produto, pois existe um pedido com ele',
-        ])->withInput();
+                'produto' => 'Não é possivel alterar esse produto, pois existe um pedido com ele',
+            ]);
         }
+
         $categorias = Categoria::all();
 
         return view('editar_produto', [
@@ -99,8 +100,8 @@ class ProdutoController extends Controller
 
         if ($existePedido) {
             return back()->withErrors([
-            'produto' => 'Não é possivel alterar esse produto, pois existe um pedido com ele',
-        ])->withInput();
+                'produto' => 'Não é possivel alterar esse produto, pois existe um pedido com ele',
+            ]);
         }
 
         $validated = $request->validate([
