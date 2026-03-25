@@ -17,6 +17,9 @@ class ProdutoController extends Controller
         $produtos = Produto::all();
 
         $categorias = Categoria::all();
+        foreach ($produtos as $produto) {
+            $produto->existePedido = Item::where('id_produto', $produto->id)->exists();
+        }
 
         return view('listar_produto', [
             'categorias' => $categorias,
@@ -72,6 +75,14 @@ class ProdutoController extends Controller
      */
     public function edit(Produto $produto)
     {
+        $existePedido = Item::where('id_produto', $produto->id)->exists();
+
+        if ($existePedido) {
+            return back()->withErrors([
+                'produto' => 'Não é possivel alterar esse produto, pois existe um pedido com ele',
+            ]);
+        }
+
         $categorias = Categoria::all();
 
         return view('editar_produto', [
@@ -88,7 +99,9 @@ class ProdutoController extends Controller
         $existePedido = Item::where('id_produto', $produto->id)->exists();
 
         if ($existePedido) {
-            return redirect()->back()->with('error', 'Não é possível editar um produto que já está em um pedido!');
+            return back()->withErrors([
+                'produto' => 'Não é possivel alterar esse produto, pois existe um pedido com ele',
+            ]);
         }
 
         $validated = $request->validate([
@@ -101,23 +114,19 @@ class ProdutoController extends Controller
         $produto->update($validated);
 
         return redirect('/')->with('success', 'Produto atualizado!');
-        }
+    }
 
     /**
      * Remove the specified resource from storage.
      */
     public function destroy(Produto $produto)
-    {   
-        $existePedido = Item::where('id_produto', $produto->id)->exists();
+    {
+        $produto = Produto::all();
 
-        if ($existePedido) {
-            return redirect()->back()->with('error', 'Não é possível excluir um produto que já está em um pedido!');
-        }
 
         $produto->delete();
-
-        return redirect('/')->with('success', 'Produto excluído!');
-        }
+        return back();
+    }
 
     public function AdicionarAoCarrinho(Request $request)
     {
