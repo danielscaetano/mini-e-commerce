@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Middleware\ConfirmacaodeAutenticacao;
 use App\Models\Categoria;
 use App\Models\Item;
 use App\Models\Produto;
@@ -121,11 +122,13 @@ class ProdutoController extends Controller
      */
     public function destroy(Produto $produto)
     {
-        $produto = Produto::all();
+        
+        $existePedido = Item::where('id_produto', $produto->id)->exists();
 
 
         $produto->delete();
-        return back();
+
+        return redirect('/')->with('success', 'Produto excluído!');
     }
 
     public function AdicionarAoCarrinho(Request $request)

@@ -6,14 +6,28 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PedidoController;
 use App\Http\Controllers\ProdutoController;
+use App\Http\Middleware\ConfirmacaodeAutenticacao;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', [HomeController::class, 'home']);
+Route::get('logar', [LoginController::class, 'index'])->name('login.index');
+Route::post('logar', [LoginController::class, 'store'])->name('login.store');
+Route::post('cadastro', [CadastroController::class, 'store'])->name('cadastro.store');
+Route::get('cadastro', [CadastroController::class, 'index'])->name('cadastro.index');
 
-Route::resource('produtos', ProdutoController::class);
-Route::resource('login', LoginController::class);
-Route::resource('cadastro', CadastroController::class);
-Route::resource('categorias', CategoriaController::class);
+Route::middleware(ConfirmacaodeAutenticacao::class)->group(function () {
+    Route::get('/', [HomeController::class, 'home']);
 
-Route::post('/carrinho/adicionar', [ProdutoController::class, 'AdicionarAoCarrinho'])->name('carrinho.adicionar');
-Route::post('/marcarComoPago/{id}', [PedidoController::class, 'marcarComoPago'])->name('marcarComoPago');
+    Route::resource('produtos', ProdutoController::class);
+
+    Route::resource('categorias', CategoriaController::class);
+
+    Route::post('/carrinho/adicionar', [ProdutoController::class, 'AdicionarAoCarrinho'])
+        ->name('carrinho.adicionar');
+
+    Route::post('/marcarComoPago/{id}', [PedidoController::class, 'marcarComoPago'])
+        ->name('marcarComoPago');
+
+});
+
+
+

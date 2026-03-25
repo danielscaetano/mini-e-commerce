@@ -3,38 +3,36 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\User; 
 
 class CadastroController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
         return view('cadastro');
 
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
+        $existeEmail = User::where('email', $request->input('email'))->exists();
+
+        if ($existeEmail) {
+            return redirect()
+                ->back()
+                ->withErrors([
+                    'email' => 'Não é possível editar um produto que já está em um pedido!',
+                ])
+                ->withInput();
+        }
+
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|max:255',
             'password' => 'required|string|max:255',
         ]);
 
-        \App\Models\User::create([
+        User::create([
             'name' => $validated['name'],
             'email' => $validated['email'],
             'password' => $validated['password'],
@@ -42,37 +40,5 @@ class CadastroController extends Controller
         ]);
 
         return redirect('/')->with('success', 'categoria criada!');
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
     }
 }
