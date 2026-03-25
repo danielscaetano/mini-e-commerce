@@ -2,7 +2,6 @@
 
 namespace App\Providers;
 
-use App\Http\Middleware\ConfirmacaodeAutenticacao;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider

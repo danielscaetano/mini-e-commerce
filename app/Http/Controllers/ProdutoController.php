@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Middleware\ConfirmacaodeAutenticacao;
 use App\Models\Categoria;
 use App\Models\Item;
 use App\Models\Produto;
