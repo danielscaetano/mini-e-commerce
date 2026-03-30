@@ -13,10 +13,6 @@ class PedidoController extends Controller
      */
     public function index()
     {
-        $produtos = Produto::all();
-
-        $pedidos = Pedido::all();
-
         return view('home', compact('produtos', 'pedidos'));
     }
 
@@ -24,7 +20,7 @@ class PedidoController extends Controller
     {
         $pedido = Pedido::find($id);
 
-        if (! $pedido) {
+        if (!$pedido) {
             return redirect()->back()->with('error', 'Pedido não encontrado.');
         }
 

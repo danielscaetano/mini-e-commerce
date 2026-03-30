@@ -2,7 +2,9 @@
     <x-slot:title>
         bem Vindo
     </x-slot:title>
+
     <form action="{{ route('carrinho.adicionar') }}" method="POST">
+
         @csrf
         Qual o nome do Cliente?
         <input type="text" name="nome_cliente" required>
@@ -37,42 +39,55 @@
             <button type="submit" class="btn btn-primary">Adicionar ao carrinho</button>
         </div>
     </form>
-    @foreach ($pedidos as $pedido)
-        <form action="{{ route('marcarComoPago', $pedido->id) }}" method="POST">
-            @csrf
-            <div class="card bg-base-200 shadow p-4 mb-4">
-                <div class="flex justify-between">
-                    <span class="font-bold">{{ $pedido->nome_cliente }}</span>
-                    <span class="text-green-600 font-bold">
-                        Total: R$ {{ number_format($pedido->total, 2, ',', '.') }}
-                        <button type="submit" class="btn btn-primary">Pagar</button>
 
-                    </span>
-                </div>
-                <ul class="mt-2 text-sm">
-                    @foreach ($pedido->itens as $item)
-                        <li>{{ $item->produto->nome_produto }} ({{ $item->quantidade }}x)</li>
-                    @endforeach
-                </ul>
-            </div>
-        </form>
-        Produtos pago
-    @endforeach
-    @foreach ($pedidos_pago as $pedido_pago)
-        @csrf
+    <br>
+
+    <form action='/' method="GET" class="row">
+        <div class="col">
+            <label>Status Pagamento:</label>
+            <select name="filtro_pago" class="form-select">
+                <option>Selecione uma opção</option>
+                @foreach($filtroStatusPagamento as $value => $descricao) 
+                    <option 
+                        value="{{ $value }}" 
+                        @selected(request()->filtro_pago === $value)
+                    >
+                        {{ $descricao }}
+                    </option>
+                @endforeach
+            </select>
+        </div>
+
+        <div class="col">
+            <label>Nome do cliente:</label>
+            <input type="text" name="busca" placeholder="Pesquisar..." value="{{ request('busca') }}"
+                class="form-control">
+        </div>
+
+        <div class="row mt-2">
+            <button type="submit" class="form-control btn btn-primary">Filtrar</button>
+        </div>
+    </form>
+    @foreach ($pedidos as $pedido)
         <div class="card bg-base-200 shadow p-4 mb-4">
             <div class="flex justify-between">
-                <span class="font-bold">{{ $pedido_pago->nome_cliente }}</span>
+                <span class="font-bold">{{ $pedido->nome_cliente }}</span>
                 <span class="text-green-600 font-bold">
-                    Total: R$ {{ number_format($pedido_pago->total, 2, ',', '.') }}
+                    Total: R$ {{ number_format($pedido->total(), 2, ',', '.') }}
+                    @if ($pedido->pago === 0)
+                        <form action="{{ route('marcarComoPago', $pedido->id) }}" method="POST">
+                            @csrf
+                            <button type="submit" class="btn btn-primary">Pagar</button>
+                        </form>
+                    @endif
                 </span>
             </div>
-
             <ul class="mt-2 text-sm">
-                @foreach ($pedido_pago->itens as $item)
+                @foreach ($pedido->itens as $item)
                     <li>{{ $item->produto->nome_produto }} ({{ $item->quantidade }}x)</li>
                 @endforeach
             </ul>
         </div>
     @endforeach
+    {{ $pedidos->links() }}
 </x-layout>
