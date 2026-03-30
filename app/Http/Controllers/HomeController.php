@@ -4,32 +4,37 @@ namespace App\Http\Controllers;
 
 use App\Models\Pedido;
 use App\Models\Produto;
+use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
-    public function home()
+    public function home(Request $request)
     {
-        $produtos = Produto::with('categoria')->get();
+        $produtos = Produto::all();
 
-        $pedidos = Pedido::with('itens.produto')
-            ->where('pago', false)
-            ->get();
+        $pedidosQuery = Pedido::query();
 
-        foreach ($pedidos as $pedido) {
-            $pedido->total = $pedido->itens->sum(function ($item) {
-                return $item->produto->valor * $item->quantidade;
-            });
-        }
-        $pedidos_pago = Pedido::with('itens.produto')
-            ->where('pago', true)
-            ->get();
+        if ($request->filtro_pago !== null) {
+            if ($request->filtro_pago === 'pago') {
+                $pedidosQuery->where('pago', 1);
+            }
 
-        foreach ($pedidos_pago as $pedido_pago) {
-            $pedido_pago->total = $pedido_pago->itens->sum(function ($item) {
-                return $item->produto->valor * $item->quantidade;
-            });
+            if ($request->filtro_pago === 'nao_pago') {
+                $pedidosQuery->where('pago', 0);
+            }
         }
 
-        return view('home', compact('produtos', 'pedidos', 'pedidos_pago'));
+        if ($request->busca !== null) {
+            $pedidosQuery->whereLike('nome_cliente', '%' . $request->busca . '%');
+        }
+
+        $pedidos = $pedidosQuery->paginate(5)->withQueryString();
+
+        $filtroStatusPagamento = [
+            'pago' => 'Pago',
+            'nao_pago' => 'Não pago',
+        ];
+
+        return view('home', compact('produtos', 'pedidos', 'filtroStatusPagamento'));
     }
 }
