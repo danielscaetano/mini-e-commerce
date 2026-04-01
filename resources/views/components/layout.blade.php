@@ -19,9 +19,10 @@
             <a href="/" class="btn btn-ghost text-xl">🐦 mini e-commerce</a>
         </div>
         <div class="navbar-end gap-2">
-            <a href="{{ route('categorias.create') }}" class="btn btn-primary btn-sm">Criar categoria</a>
-            <a href="{{ route('produtos.index') }}" class="btn btn-primary btn-sm">Produtos</a>        </div>
-    </nav>
+        {{ $navExtra ?? '' }} 
+        <a href="{{ route('loja.index') }}" class="btn btn-primary btn-sm">Minha Loja</a>        </div>
+    
+        </nav>
     @if ($errors->has('produto'))
         <div class="alert text-danger">
             {{ $errors->first('produto') }}

@@ -32,11 +32,11 @@ class ProdutoController extends Controller
      */
     public function create()
     {
-        $categorias = Categoria::all();
+        $loja = auth()->user()->loja;
 
-        return view('criar_produto', [
-            'categorias' => $categorias,
-        ]);
+        $categorias = Categoria::where('id_loja', $loja->id)->get();
+
+        return view('criar_produto', compact('categorias', 'loja'));
     }
 
     /**
@@ -67,7 +67,7 @@ class ProdutoController extends Controller
      */
     public function show(Produto $produto)
     {
-        $produto->load('categoria');
+
     }
 
     /**
@@ -121,7 +121,7 @@ class ProdutoController extends Controller
      */
     public function destroy(Produto $produto)
     {
-        
+
         $existePedido = Item::where('id_produto', $produto->id)->exists();
 
 

@@ -35,11 +35,16 @@ class User extends Authenticatable
         'remember_token',
     ];
 
+
     /**
      * Get the attributes that should be cast.
      *
      * @return array<string, string>
      */
+    public function loja()
+    {
+        return $this->hasOne(Loja::class, 'id_user');
+    }
     protected function casts(): array
     {
         return [

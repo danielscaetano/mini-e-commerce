@@ -16,7 +16,7 @@
 <body>
 
 
-    <form method="POST" id="formulario"action="{{ route('categorias.store') }}">
+    <form method="POST" id="formulario"action="{{ route('categorias.store', $loja->id)  }}">
 
         <x-layout>
             <x-slot:title>
