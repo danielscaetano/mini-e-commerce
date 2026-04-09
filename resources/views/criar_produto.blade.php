@@ -1,5 +1,5 @@
 <x-layout>
-    <form method="POST" action="{{ route('produtos.store') }}" id="formulario">
+    <form method="POST" action="{{ route('produtos.store', $loja->id ) }}" id="formulario">
         @csrf
         <table>
             <tr>

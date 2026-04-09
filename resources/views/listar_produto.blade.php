@@ -2,7 +2,7 @@
         <x-slot:title>
             Produtos
         </x-slot:title>
-        <a href="{{ route('produtos.create') }}" class="btn btn-primary btn-sm">Criar produto</a>
+        <a href="{{ route('produtos.create', $loja->id) }}" class="btn btn-primary btn-sm">Criar produto</a>
         @forelse ($produtos as $produto)
             <div class="card bg-base-100 shadow p-4 flex flex-col justify-between">
                 <div>
@@ -14,7 +14,7 @@
                 <div class="border rounded-md p-4 mb-4 shadow-sm">
                     <div class="flex gap-2">
                         @if (!$produto->existePedido)
-                            <a href="{{ route('produtos.edit', $produto->id) }}" class="btn btn-primary">Editar</a>
+                            <a href="{{ route('produtos.edit', [$loja->id,$produto->id]) }}" class="btn btn-primary">Editar</a>
                             <form action="{{ route('produtos.destroy', $produto->id) }}" method="POST">
                                 @csrf
                                 @method('DELETE')

@@ -1,7 +1,7 @@
 <x-layout>
     <x-slot:navExtra>
         @if ($loja)
-            <a href="{{ route('categorias.create', $loja->id) }}" class="btn btn-primary btn-sm">
+            <a href="{{ route('categorias.index', $loja->id) }}" class="btn btn-primary btn-sm">
                 Criar categoria
             </a>
             <a href="{{ route('produtos.index', $loja->id) }}" class="btn btn-primary btn-sm">
@@ -14,7 +14,7 @@
         bem Vindo
     </x-slot:title>
 
-    <form action="{{ route('carrinho.adicionar') }}" method="POST">
+    <form action="{{ route('carrinho.adicionar',$loja->id ) }}" method="POST">
 
         @csrf
         Qual o nome do Cliente?
@@ -53,7 +53,7 @@
 
     <br>
 
-    <form action='/' method="GET" class="row">
+    <form action="{{ route('loja.show', $loja->id) }}" method="GET" class="row">
         <div class="col">
             <label>Status Pagamento:</label>
             <select name="filtro_pago" class="form-select">

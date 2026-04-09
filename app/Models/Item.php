@@ -12,6 +12,8 @@ class Item extends Model
         'id_produto',
         'id_pedido',
         'quantidade',
+        'id_loja',
+
     ];
 
     public function produto()

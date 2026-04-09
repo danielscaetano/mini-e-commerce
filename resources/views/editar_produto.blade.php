@@ -1,5 +1,5 @@
 <x-layout>
-    <form method="POST" action="{{ route('produtos.update', $produto->id) }}" id="formulario">
+    <form method="POST" action="{{ route('produtos.update', [$loja->id,$produto->id]) }}" id="formulario">
         @csrf
         @method('PUT')
 
