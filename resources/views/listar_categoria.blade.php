@@ -12,7 +12,7 @@
                     <div class="flex gap-2">
                     @if (!$categoria->existePedido)
                             <a href="{{ route('categorias.edit', [$loja->id, $categoria->id]) }}" class="btn btn-primary">Editar</a>
-                            <form action="{{ route('categorias.destroy', [$categoria->id]) }}" method="POST">
+                            <form action="{{ route('categorias.destroy', [$loja->id,$categoria->id]) }}" method="POST">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="btn btn-danger">Deletar</button>

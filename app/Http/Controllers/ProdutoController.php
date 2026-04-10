@@ -133,17 +133,18 @@ class ProdutoController extends Controller
         ]);
 
         $produto->update($validated);
-
-        return redirect('/')->with('success', 'Produto atualizado!');
+        return redirect()->route('loja.show', $loja_id)
+            ->with('success', 'Produto atualizado!');
     }
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Produto $produto)
+    public function destroy($loja_id, Produto $produto)
     {
         $produto->delete();
 
-        return back()->with('success', 'Produto excluído!');
+        return redirect()->route('loja.show', $loja_id)
+            ->with('success', 'Produto atualizado!');
     }
 
     public function AdicionarAoCarrinho(Request $request, $id)
@@ -153,7 +154,7 @@ class ProdutoController extends Controller
             ->where('id', $id)
             ->first();
         $produtosSelecionados = collect($request->produtos ?? [])
-            ->filter(fn($item) => isset($item['selecionado']));
+            ->filter(fn ($item) => isset($item['selecionado']));
 
         if ($produtosSelecionados->isEmpty()) {
             return redirect()->back()->with('error', 'Nenhum produto selecionado!');

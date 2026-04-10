@@ -19,9 +19,13 @@ class CategoriaController extends Controller
             ->first();
         $categorias = Categoria::where('id_loja', $loja->id)->get();
         foreach ($categorias as $categoria) {
-            $categoria->existePedido = Item::where('id_categoria', $categoria->id)
-                ->whereHas('pedido')
+
+            $categoria->existePedido = Item::whereHas('pedido')
+                ->whereHas('produto', function ($q) use ($categoria) {
+                    $q->where('id_categoria', $categoria->id);
+                })
                 ->exists();
+
         }
 
 
@@ -74,8 +78,8 @@ class CategoriaController extends Controller
     public function edit($id_loja, Categoria $categoria)
     {
         $loja = Loja::where('id_user', auth()->id())
-        ->where('id', $id_loja)
-        ->first();
+            ->where('id', $id_loja)
+            ->first();
 
         $categoria->existePedido = Item::where('id_categoria', $categoria->id)
             ->whereHas('pedido')
@@ -89,21 +93,23 @@ class CategoriaController extends Controller
     {
         $validated = $request->validate([
             'nome_categoria' => 'required|max:50',
-            'id_loja' => 'required|exists:lojas,id', ]);
+            'id_loja' => 'required|exists:lojas,id',
+        ]);
 
         $categoria->update($validated);
-
-        return redirect('/')->with('success', 'Categoria atualizada!');
+        return redirect()->route('loja.show', $loja_id)
+            ->with('success', 'Produto atualizado!');
     }
 
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Categoria $categoria)
+    public function destroy($loja_id, Categoria $categoria)
     {
         $categoria->delete();
 
-        return back()->with('success', 'Categoria excluída!');
+        return redirect()->route('loja.show', $loja_id)
+            ->with('success', 'Produto atualizado!');
     }
 }

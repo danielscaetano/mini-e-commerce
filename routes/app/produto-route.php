@@ -16,11 +16,11 @@ Route::middleware(ConfirmacaodeAutenticacao::class)->group(function () {
         ->name('produtos.edit');
     Route::put('produtos/update/{loja}/{produto}', [ProdutoController::class, 'update'])
         ->name('produtos.update');
-    Route::delete('produtos/destroy/{produto}', [ProdutoController::class, 'destroy'])
+    Route::delete('produtos/destroy/{loja}/{produto}', [ProdutoController::class, 'destroy'])
         ->name('produtos.destroy');
     Route::get('/produtos/{loja}', [ProdutoController::class, 'index'])
         ->name('produtos.index');
-        
+
     Route::post('/carrinho/{id}', [ProdutoController::class, 'AdicionarAoCarrinho'])
     ->name('carrinho.adicionar');
 

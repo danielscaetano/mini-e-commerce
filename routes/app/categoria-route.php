@@ -17,7 +17,7 @@ Route::middleware(ConfirmacaodeAutenticacao::class)->group(function () {
 
     Route::get('/categorias/{loja}', [CategoriaController::class, 'index'])
     ->name('categorias.index');
-    Route::delete('categorias/destroy{categoria}', [CategoriaController::class, 'destroy'])
+    Route::delete('categorias/destroy/{loja}/{categoria}', [CategoriaController::class, 'destroy'])
         ->name('categorias.destroy');
     Route::post('categorias/{loja}', [CategoriaController::class, 'store'])
         ->name('categorias.store');
