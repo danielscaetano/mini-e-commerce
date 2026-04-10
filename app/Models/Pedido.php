@@ -7,7 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 class Pedido extends Model
 {
     protected $fillable = [
-        'nome_cliente', 'pago',
+        'nome_cliente',
+        'pago',
+        'id_loja',
+
     ];
 
     public function itens()

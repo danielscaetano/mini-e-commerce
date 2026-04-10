@@ -1,54 +1,53 @@
 <x-layout>
-    <form method="POST" action="{{ route('produtos.update', $produto->id) }}" id="formulario">
+
+    <form method="POST" action="{{ route('produtos.update', [$loja->id,$produto->id]) }}" id="formulario" class="container mt-4">
         @csrf
         @method('PUT')
 
-        <table>
-            <tr>
-                <td>
-                    <label>Categoria</label>
-                    <select name="id_categoria" required>
-                        <option value="">Selecione uma Opção</option>
+        <div class="card shadow">
+            <div class="card-body">
 
+                <h4 class="mb-4">Editar Produto</h4>
+
+                <div class="mb-3">
+                    <label class="form-label">Categoria</label>
+                    <select name="id_categoria" class="form-select" required>
+                        <option value="">Selecione uma opção</option>
                         @foreach ($categorias as $categoria)
                             <option value="{{ $categoria->id }}"
                                 {{ $produto->id_categoria == $categoria->id ? 'selected' : '' }}>
                                 {{ $categoria->nome_categoria }}
                             </option>
                         @endforeach
-
                     </select>
-                </td>
-            </tr>
+                </div>
 
-            <tr>
-                <td>
-                    <label>Nome do Produto</label>
-                    <input type="text" name="nome_produto" value="{{ $produto->nome_produto }}" required>
+                <div class="mb-3">
+                    <label class="form-label">Nome do Produto</label>
+                    <input type="text" name="nome_produto" class="form-control"
+                        value="{{ $produto->nome_produto }}" required>
+                </div>
 
-                </td>
-            </tr>
+                <div class="mb-3">
+                    <label class="form-label">Descrição</label>
+                    <input type="text" name="descricao" class="form-control"
+                        value="{{ $produto->descricao }}">
+                </div>
 
-            <tr>
-                <td>
-                    <label>Descrição</label>
-                    <input type="text" name="descricao" value="{{ $produto->descricao }}">
-                </td>
-            </tr>
+                <div class="mb-3">
+                    <label class="form-label">Valor do Produto</label>
+                    <input type="number" step="0.01" name="valor" class="form-control"
+                        value="{{ $produto->valor }}" required>
+                </div>
 
-            <tr>
-                <td>
-                    <label>Valor do Produto</label>
-                    <input type="number" step="0.01" name="valor" value="{{ $produto->valor }}" required>
-                </td>
-            </tr>
+                <div class="d-grid">
+                    <button id="salvar" type="submit" class="btn btn-primary">
+                        Atualizar produto
+                    </button>
+                </div>
 
-            <tr>
-                <td>
-                    <button id="salvar" type="submit">Atualizar produto</button>
-                </td>
-            </tr>
-        </table>
+            </div>
+        </div>
     </form>
 
     <script>
@@ -61,4 +60,5 @@
             })
         })
     </script>
+
 </x-layout>

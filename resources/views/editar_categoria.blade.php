@@ -24,19 +24,22 @@
 
             <h1 class="text-3xl font-bold mb-4">Categoria</h1>
 
-            <form method="POST" id="formulario" action="{{ route('categorias.store', $loja->id) }}">
+            <form method="POST" id="formulario"
+                action="{{ route('categorias.update', [$loja->id, $categoria->id]) }}">
                 @csrf
+                @method('PUT')
+
+                <input type="hidden" name="id_loja" value="{{ $loja->id }}">
 
                 <div class="card bg-base-100 shadow">
                     <div class="card-body">
 
                         <div class="form-control w-full">
                             <textarea name="nome_categoria"
-                                placeholder="Qual categoria?"
                                 class="textarea textarea-bordered w-full resize-none"
                                 rows="4"
                                 maxlength="255"
-                                required></textarea>
+                                required>{{ old('nome_categoria', $categoria->nome_categoria) }}</textarea>
                         </div>
 
                         <div class="mt-4 flex justify-end">
@@ -61,9 +64,10 @@
             formulario.addEventListener('submit', function() {
                 console.log("foi enviado");
                 botao_salvar.disabled = true;
-            });
-        });
+            })
+        })
     </script>
 
 </body>
+
 </html>
