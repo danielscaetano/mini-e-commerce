@@ -36,31 +36,38 @@ class LojaController extends Controller
     }
 
     public function painel(Request $request, $id)
-    {
-        $loja = Loja::where('id', $id)->first();
+{
+    $loja = Loja::findOrFail($id);
 
-        $produtos = Produto::where('id_loja', $loja->id)->get();
+    $produtos = Produto::where('id_loja', $loja->id)->get();
 
-        $pedidosQuery = Pedido::where('id_loja', $loja->id);
+    $pedidosQuery = Pedido::where('id_loja', $loja->id);
 
-        if ($request->filtro_pago) {
-            $status = ($request->filtro_pago === 'pago') ? 1 : 0;
-            $pedidosQuery->where('pago', $status);
-        }
-
-        if ($request->busca) {
-            $pedidosQuery->where('nome_cliente', 'like', '%' . $request->busca . '%');
-        }
-
-        $pedidos = $pedidosQuery->paginate(5);
-
-        $filtroStatusPagamento = [
-            'pago' => 'Pago',
-            'nao_pago' => 'Não pago',
-        ];
-
-        return view("minha_loja", compact('produtos', 'pedidos', 'filtroStatusPagamento', 'loja'));
+    if (auth()->id() != $loja->id_user) {
+        $pedidosQuery->where('id_user', auth()->id());
     }
 
+    if ($request->filtro_pago) {
+        $pedidosQuery->where('pago', $request->filtro_pago === 'pago' ? 1 : 0);
+    }
+
+    if ($request->busca) {
+        $pedidosQuery->where('nome_cliente', 'like', '%' . $request->busca . '%');
+    }
+
+    $pedidos = $pedidosQuery->paginate(5);
+
+    $pedidos->appends([
+        'filtro_pago' => $request->filtro_pago,
+        'busca' => $request->busca,
+    ]);
+
+    $filtroStatusPagamento = [
+        'pago' => 'Pago',
+        'nao_pago' => 'Não pago',
+    ];
+
+    return view("minha_loja", compact('produtos', 'pedidos', 'filtroStatusPagamento', 'loja'));
+}
 
 }

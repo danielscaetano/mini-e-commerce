@@ -2,7 +2,7 @@
     <x-slot:navExtra>
         @if ($loja->id_user === auth()->id())
             <a href="{{ route('categorias.index', $loja->id) }}" class="btn btn-primary btn-sm">
-                Criar categoria
+                Categoria
             </a>
             <a href="{{ route('produtos.index', $loja->id) }}" class="btn btn-primary btn-sm">
                 Produtos
@@ -14,8 +14,8 @@
         bem Vindo
     </x-slot:title>
 
-    <form action="{{ route('carrinho.adicionar', $loja->id) }}" method="POST">
-        @csrf
+    <form action="{{ route('carrinho.adicionar', ['user' => auth()->id(), 'loja' => $loja->id]) }}" method="POST">
+     @csrf
 
         
 

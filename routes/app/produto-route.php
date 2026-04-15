@@ -26,7 +26,7 @@ Route::middleware(ConfirmacaodeAutenticacao::class)->group(function () {
     Route::get('/produtos/{loja}', [ProdutoController::class, 'index'])
         ->name('produtos.index');
 
-    Route::post('/carrinho/{loja}', [ProdutoController::class, 'AdicionarAoCarrinho'])
+    Route::post('/carrinho/{user}/{loja}', [ProdutoController::class, 'AdicionarAoCarrinho'])
         ->name('carrinho.adicionar');
 
 });

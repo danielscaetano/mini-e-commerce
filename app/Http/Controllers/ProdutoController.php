@@ -35,7 +35,7 @@ class ProdutoController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    // Receba o $id da loja pela URL
+
     public function create($id)
     {
         $loja = Loja::where('id_user', auth()->id())
@@ -105,8 +105,8 @@ class ProdutoController extends Controller
 
         return view('editar_produto', [
             'produto' => $produto,
-            'categorias' => Categoria::where('id_loja', $loja->id)->get(), // Só categorias da loja
-            'loja' => $loja
+            'categorias' => Categoria::where('id_loja', $loja->id)->get(),
+            ja
         ]);
     }
 
@@ -147,22 +147,25 @@ class ProdutoController extends Controller
             ->with('success', 'Produto atualizado!');
     }
 
-    public function AdicionarAoCarrinho(Request $request, $id)
+    public function AdicionarAoCarrinho(Request $request, $user, $loja)
     {
 
         
+
+
         $produtosSelecionados = collect($request->produtos ?? [])
-            ->filter(fn ($item) => isset($item['selecionado']));
+            ->filter(fn($item) => isset($item['selecionado']));
 
         if ($produtosSelecionados->isEmpty()) {
             return redirect()->back()->with('error', 'Nenhum produto selecionado!');
         }
 
-       
 
+        $loja = Loja::find($loja);
         $pedido = Pedido::create([
-            'id_loja' => $id,
+            'id_loja' => $loja->id,
             'nome_cliente' => auth()->user()->name,
+            'id_user' => $user,
         ]);
 
         foreach ($produtosSelecionados as $id_produto => $item) {
@@ -170,7 +173,7 @@ class ProdutoController extends Controller
                 'id_produto' => $id_produto,
                 'id_pedido' => $pedido->id,
                 'quantidade' => $item['quantidade'],
-                'id_loja' => $id,
+                'id_loja' => $loja->id,
             ]);
         }
 
