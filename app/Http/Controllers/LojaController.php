@@ -37,9 +37,7 @@ class LojaController extends Controller
 
     public function painel(Request $request, $id)
     {
-        $loja = Loja::where('id_user', auth()->id())
-            ->where('id', $id)
-            ->first();
+        $loja = Loja::where('id', $id)->first();
 
         $produtos = Produto::where('id_loja', $loja->id)->get();
 
