@@ -150,9 +150,7 @@ class ProdutoController extends Controller
     public function AdicionarAoCarrinho(Request $request, $id)
     {
 
-        $loja = Loja::where('id_user', auth()->id())
-            ->where('id', $id)
-            ->first();
+        
         $produtosSelecionados = collect($request->produtos ?? [])
             ->filter(fn ($item) => isset($item['selecionado']));
 
@@ -160,13 +158,11 @@ class ProdutoController extends Controller
             return redirect()->back()->with('error', 'Nenhum produto selecionado!');
         }
 
-        $validated = $request->validate([
-            'nome_cliente' => 'required|string|max:255',
-        ]);
+       
 
         $pedido = Pedido::create([
-            'nome_cliente' => $validated['nome_cliente'],
-            'id_loja' => $loja->id,
+            'id_loja' => $id,
+            'nome_cliente' => auth()->user()->name,
         ]);
 
         foreach ($produtosSelecionados as $id_produto => $item) {
@@ -174,7 +170,7 @@ class ProdutoController extends Controller
                 'id_produto' => $id_produto,
                 'id_pedido' => $pedido->id,
                 'quantidade' => $item['quantidade'],
-                'id_loja' => $loja->id,
+                'id_loja' => $id,
             ]);
         }
 

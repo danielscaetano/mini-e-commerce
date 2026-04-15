@@ -1,6 +1,6 @@
 <x-layout>
     <x-slot:navExtra>
-        @if ($loja)
+        @if ($loja->id_user === auth()->id())
             <a href="{{ route('categorias.index', $loja->id) }}" class="btn btn-primary btn-sm">
                 Criar categoria
             </a>
@@ -17,10 +17,7 @@
     <form action="{{ route('carrinho.adicionar', $loja->id) }}" method="POST">
         @csrf
 
-        <div class="mb-3">
-            <label class="form-label">Qual o nome do Cliente?</label>
-            <input type="text" name="nome_cliente" class="form-control" required>
-        </div>
+        
 
         <div class="row g-3">
             @forelse ($produtos as $produto)
